@@ -1,3 +1,4 @@
+/* eslint-disable no-console, mocha/no-exclusive-tests */
 import { posix as path } from "path";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
@@ -26,7 +27,7 @@ function pathPosixify(pOutput) {
   return lReturnValue;
 }
 
-describe("[E] main.cruise - main", () => {
+describe.only("[E] main.cruise - main", () => {
   it("Returns an object when no options are passed", () => {
     const lResult = main.cruise(["test/main/__mocks__/ts"]);
 
@@ -34,9 +35,18 @@ describe("[E] main.cruise - main", () => {
     expect(lResult.output).to.be.jsonSchema(cruiseResultSchema);
   });
 
-  it("Returns an object when no options are passed (absolute path)", () => {
+  it.only("Returns an object when no options are passed (absolute path)", () => {
+    console.log(
+      'path.join(__dirname, "__mocks__", "ts")',
+      path.join(__dirname, "__mocks__", "ts")
+    );
+    console.log(
+      'path.join(pathToPosix(__dirname), "__mocks__", "ts")',
+      path.join(pathToPosix(__dirname), "__mocks__", "ts")
+    );
+
     const lResult = main.cruise(
-      [path.join(__dirname, "__mocks__", "ts")],
+      [path.join(pathToPosix(__dirname), "__mocks__", "ts")],
       {},
       { bustTheCache: true }
     );
